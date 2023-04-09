@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+            * {
+                border: 0;
+                padding: 0;
+                margin: 0;
+                font-family: 'Open Sans', sans-serif;
+                outline: none;
+                user-select: none;
+            }
+            .container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .container .bible {
+                max-width: 60%;
+                max-height: 60vh;
+                column-width: 18em;
+                column-gap: 2em;
+                padding: 2vh;
+                border: 0.125vh solid rgba(0, 0, 0, 0.25);
+                margin-left: auto;
+                margin-right: auto;
+                overflow: auto;
+            }
+            .container .bible button {
+                background-color: rgba(0, 0, 0, 0);
+                color: rgba(0, 0, 0, 0.75);
+                text-align: left;
+                font-size: 1.5vh;
+                padding: 0.25vh;
+            }
+            .container .bible span {
+                font-size: 1.25vh;
+                padding: 0.25vh;
+                padding-right: 0.5vh;
+            }
+            .container .title {
+                padding: 2.5vh;
+                text-align: center;
+                font-weight: 500;
+                font-size: 2.25vh;
+            }
+            @media screen and (max-width: 500px) {
+                .container {
+                    display: block;
+                }
+                .container .title {
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    background-color: #FFFFFF;
+                    padding: 0;
+                    height: 8vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-top: 0.125vh solid rgba(0, 0, 0, 0.25)
+                }
+                .container .bible {
+                    border: 0;
+                    max-width: 100%;
+                    max-height: 100%;
+                    background-color: #f9f9f9;
+                }
+                .container .bible button {
+                    font-size: 1.8vh;
+                    padding: 0.7vh;
+                }
+                .container .bible button:last-child {
+                    margin-bottom: 7.5vh;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="frame">
+                <div class="title"></div>
+                <div class="bible"></div>
+            </div>
+        </div>
+    </body>
+    <script>
+        window.addEventListener("load", async () => {
+            bible = document.getElementsByClassName("bible")[0]
+            title = document.getElementsByClassName("title")[0]
+            request = await fetch("/bibles/NIV?book=1john&chapter=4")
+            json = await request.json()
+            bible.innerHTML = ""
+            count = 0
+            json.verses.forEach((verse) => {
+                verse = [verse, document.createElement("button")]
+                verse[1].innerHTML = `<span>${verse[0][0]}</span>${verse[0][1]}`
+                bible.appendChild(verse[1])
+            })
+            title.textContent = json.name
+        })
+    </script>
+</html>
